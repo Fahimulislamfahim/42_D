@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'models.dart';
 import 'database_service.dart';
 
-final databaseProvider = Provider((ref) => DatabaseService());
+final databaseProvider = Provider<DatabaseService>((ref) => DatabaseService());
 
 final studentProvider = StateProvider<Student?>((ref) => null);
 
@@ -16,8 +16,9 @@ final tasksProvider = FutureProvider<List<Task>>((ref) async {
   return db.getTasks();
 });
 
-class ChatNotifier extends StateNotifier<List<Message>> {
-  ChatNotifier() : super([]);
+class ChatNotifier extends Notifier<List<Message>> {
+  @override
+  List<Message> build() => [];
 
   void setMessages(List<Message> messages) {
     state = messages;
@@ -28,6 +29,6 @@ class ChatNotifier extends StateNotifier<List<Message>> {
   }
 }
 
-final chatProvider = StateNotifierProvider<ChatNotifier, List<Message>>((ref) {
+final chatProvider = NotifierProvider<ChatNotifier, List<Message>>(() {
   return ChatNotifier();
 });
